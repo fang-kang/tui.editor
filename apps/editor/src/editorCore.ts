@@ -147,6 +147,7 @@ class ToastUIEditor {
       extendedAutolinks,
       referenceDefinition,
       frontMatter,
+      customMarkdownRenderer,
     } = this.options;
     const rendererOptions = {
       linkAttribute,
@@ -170,7 +171,7 @@ class ToastUIEditor {
     this.i18n.setCode(this.options.language);
 
     this.toastMark = new ToastMark('', {
-      disallowedHtmlBlockTags: ['br'],
+      disallowedHtmlBlockTags: ['br', 'img'],
       extendedAutolinks,
       referenceDefinition,
       disallowDeepHeading: true,
@@ -188,7 +189,11 @@ class ToastUIEditor {
 
     this.wwEditor = new WysiwygEditor(this.eventEmitter, wwToDOMAdaptor);
 
-    this.convertor = new Convertor(this.wwEditor.getSchema());
+    this.convertor = new Convertor(
+      this.wwEditor.getSchema(),
+      customMarkdownRenderer,
+      linkAttribute!
+    );
 
     if (plugins) {
       invokePlugins(plugins, this);
